@@ -21,3 +21,5 @@ class article(models.Model):
 
     class Meta:
         ordering = ['-publish_date']
+
+

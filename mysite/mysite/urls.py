@@ -22,4 +22,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.index),
     url(r'^article/(?P<id>\d+)/', views.article_detail),
+    url(r'^category/(?P<category>\w+)/', views.article_category),
+    url(r'^search/(?P<search>\w+)/', views.article_search),
 ]
