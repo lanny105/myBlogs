@@ -42,8 +42,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'article',
+    'disqus',
+    'tinymce',
 ]
+SITE_ID = 1
+DISQUS_API_KEY = 'ea26tJp6ZLn2sh1TnKHn4BhRZzbAicuWFiBWS0cDXlJWOM599MebvHMBUiNVxVC4'
+DISQUS_WEBSITE_SHORTNAME = 'lanny105'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -130,3 +136,5 @@ BOOTSTRAP_ADMIN_SIDEBAR_MENU = True
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'mysite', 'static'),
 )
+
+

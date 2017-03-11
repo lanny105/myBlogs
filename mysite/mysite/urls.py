@@ -15,8 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from django.conf.urls import include
 
 from article import views
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -24,4 +26,5 @@ urlpatterns = [
     url(r'^article/(?P<id>\d+)/', views.article_detail),
     url(r'^category/(?P<category>\w+)/', views.article_category),
     url(r'^search/(?P<search>\w+)/', views.article_search),
+    url(r'^tinymce/', include('tinymce.urls')),
 ]

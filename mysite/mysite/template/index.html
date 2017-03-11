@@ -1,17 +1,45 @@
 {% extends 'base.html' %}
+{% load custom_markdown %}
 
 {% block content %}
 {% for post in article_list %}
 
     <h2 style="margin-bottom: 15px;">{{ post.title }} <a href="/category/{{ post.category }}" style="font-size: 20px;"><span class="label label-info">{{ post.category }}</span></a> </h2>
 
-    <p><span class="glyphicon glyphicon-user">Lanny105 </span> 发表于: <span class="glyphicon glyphicon-time"></span> {{ post.publish_date }} <a href="#">浏览<span class="badge">42</span></a> </p>
+    <p><span class="glyphicon glyphicon-user">Lanny105 </span> 发表于: <span class="glyphicon glyphicon-time"></span> {{ post.publish_date }} 浏览<span class="badge">{{ post.visit }}</span> </p>
     <br>
     <p style="font-size: 16px;color: #9b9b9b;margin-top: -10px;margin-bottom: 20px;">{{ post.content|slice:":250" }}...</p>
 
-    <p> <a href="/article/{{ post.id }}">阅读全文</a>  <a href="#">评论 <span class="badge">10</span></a></p>
+    <p> <a href="/article/{{ post.id }}">阅读全文</a>
+<a href="{{ object.get_absolute_url }}/article/{{post.id}}/#disqus_thread"  >View Comments</a>
+ </p>
 
     <hr>
 
 {% endfor %}
-{% endblock%}
+{% endblock %}
+
+{% block cate1 %}
+{% for cate in category_list %}
+    {% if forloop.counter0|divisibleby:"2"  %}
+        <li><a href="/category/{{ cate }}">{{ cate }}</a>
+        </li>
+    {% endif %}
+{% endfor %}
+{% endblock %}
+
+{% block cate2 %}
+{% for cate in category_list %}
+    {% if not forloop.counter0|divisibleby:"2"  %}
+        <li><a href="/category/{{ cate }}">{{ cate }}</a>
+        </li>
+    {% endif %}
+{% endfor %}
+{% endblock %}
+
+{% block recent %}
+    {% load disqus_tags %}
+                    <!--{% disqus_recent_comments shortname num_items excerpt_length hide_avatars avatar_size %}-->
+    {% disqus_recent_comments shortname 9 5000 0 32 %}
+
+{% endblock %}
