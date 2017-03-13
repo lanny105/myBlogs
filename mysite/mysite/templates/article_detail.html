@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load custom_markdown %}
+
+{% block content %}
+    <h1>{{ article.title }}</h1>
+
+                <!-- Author -->
+    <p class="lead">
+        作者：  <a href="#">{{ article.author }}</a>
+    </p>
+
+    <hr>
+
+    <!-- Date/Time -->
+    <p><span class="glyphicon glyphicon-time"></span> 发表于 {{ article.publish_date }} {% load disqus_tags %}
+<a href="{{ object.get_absolute_url }}#disqus_thread">View Comments</a>
+{% disqus_num_replies %}</p>
+
+    <hr>
+    <p class="lead"> {{ article.content|custom_markdown}}</p>
+    <hr>
+
+{% disqus_show_comments %}
+{% endblock %}
+{% block cate1 %}
+{% for cate in category_list %}
+    {% if forloop.counter0|divisibleby:"2"  %}
+        <li><a href="/category/{{ cate }}">{{ cate }}</a>
+        </li>
+    {% endif %}
+{% endfor %}
+{% endblock %}
+
+{% block cate2 %}
+{% for cate in category_list %}
+    {% if not forloop.counter0|divisibleby:"2"  %}
+        <li><a href="/category/{{ cate }}">{{ cate }}</a>
+        </li>
+    {% endif %}
+{% endfor %}
+{% endblock %}

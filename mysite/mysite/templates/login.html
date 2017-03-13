@@ -1,0 +1,64 @@
+{% extends "base2.html" %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+    <form method="post" action="{% url 'login' %}" class="form-signin"> {% csrf_token %}
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <label class="sr-only">username</label>
+        <!--{{ form.username }}-->
+        <!--<input type="text" class="form-control" placeholder="Username" required autofocus>-->
+
+        {{ form.username | append_attr:"class:form-control" | attr:"type:text" | attr:"placeholder:Username" }}
+
+        <label class="sr-only">Password</label>
+
+        {{ form.password | append_attr:"class:form-control" | attr:"type:password" | attr:"placeholder:Password" }}
+
+        <!--<input type="password" class="form-control" placeholder="Password" required>-->
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="remember-me"> Remember me
+          </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" value="login">Sign in</button>
+
+
+        {% if form.errors %}
+            <div class="alert alert-warning">
+              <strong>Warning!</strong> Your username and password didn't match. Please try again.
+            </div>
+        {% endif %}
+        <!--<table>-->
+        <!--<tr>-->
+            <!--<td>{{ form.username.label_tag }}</td>-->
+            <!--<td>{{ form.username }}</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--<td>{{ form.password.label_tag }}</td>-->
+            <!--<td>{{ form.password }}</td>-->
+        <!--</tr>-->
+        <!--</table>-->
+
+        <!--<input type="submit" value="login" />-->
+        <input type="hidden" name="next" value="{{ next }}" />
+    </form>
+{% endblock %}
+
+{% block cate1 %}
+{% for cate in category_list %}
+    {% if forloop.counter0|divisibleby:"2"  %}
+        <li><a href="/category/{{ cate }}">{{ cate }}</a>
+        </li>
+    {% endif %}
+{% endfor %}
+{% endblock %}
+
+{% block cate2 %}
+{% for cate in category_list %}
+    {% if not forloop.counter0|divisibleby:"2"  %}
+        <li><a href="/category/{{ cate }}">{{ cate }}</a>
+        </li>
+    {% endif %}
+{% endfor %}
+{% endblock %}

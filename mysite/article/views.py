@@ -1,8 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
+
 from article.models import article
 from django.http import Http404
 from django.db.models import Q
+from .form import PostForm
+
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -30,7 +34,7 @@ def article_detail(request, id):
         raise Http404('This article does not exist')
 
     return render(request, 'article_detail.html', {
-       'article' : a, 'category_list': category_list
+       'article': a, 'category_list': category_list
     })
 
 
@@ -44,6 +48,7 @@ def article_category(request, category):
        'article_list': a, 'category_list': category_list
     })
 
+
 def article_search(request, search):
     category_list = article.objects.order_by('category').values_list('category', flat=True).distinct()
     try:
@@ -53,3 +58,38 @@ def article_search(request, search):
     return render(request, 'index.html', {
        'article_list': a, 'category_list': category_list
     })
+
+
+@login_required
+def post_new(request):
+    category_list = article.objects.order_by('category').values_list('category', flat=True).distinct()
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            a = form.save(commit=True)
+            a.author = request.user
+            a.publish()
+            return redirect('article_detail', id=a.id)
+
+    else:
+        form = PostForm()
+    return render(request, 'new_article.html', {'form': form, 'category_list': category_list})
+
+
+@login_required
+def post_edit(request, id):
+    a = get_object_or_404(article, id=id)
+    category_list = article.objects.order_by('category').values_list('category', flat=True).distinct()
+    if request.method == 'POST':
+        form = PostForm(request.POST, instance=a)
+        if form.is_valid():
+            a = form.save(commit=False)
+            a.author = request.user
+            a.save()
+            return redirect('article_detail', id=a.id)
+
+    else:
+        form = PostForm(instance=a)
+    return render(request, 'new_article.html', {'form': form, 'category_list': category_list})
+
+

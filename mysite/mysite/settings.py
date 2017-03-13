@@ -45,7 +45,9 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'article',
     'disqus',
-    'tinymce',
+    'pagedown',
+    'widget_tweaks',
+    # 'tinymce',
 ]
 SITE_ID = 1
 DISQUS_API_KEY = 'ea26tJp6ZLn2sh1TnKHn4BhRZzbAicuWFiBWS0cDXlJWOM599MebvHMBUiNVxVC4'
@@ -66,7 +68,7 @@ ROOT_URLCONF = 'mysite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['mysite/template'],
+        'DIRS': ['mysite/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -117,7 +119,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'US/Pacific'
 
 USE_I18N = True
 
@@ -136,5 +138,7 @@ BOOTSTRAP_ADMIN_SIDEBAR_MENU = True
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'mysite', 'static'),
 )
+
+LOGIN_REDIRECT_URL = '/'
 
 

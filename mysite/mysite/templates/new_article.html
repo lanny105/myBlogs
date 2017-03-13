@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+
+{% block content %}
+
+    <h1>New article</h1>
+
+    <form method="POST" class="post-form">{% csrf_token %}
+      <div class="form-group">
+          <label>Title:</label>
+          {{ form.title | append_attr:"class:form-control"}}
+      </div>
+      <div class="form-group">
+          <label>Category:</label>
+          {{ form.category | append_attr:"class:form-control"}}
+      </div>
+      <div class="form-group">
+          <label>Content:</label>
+          {{ form.content | append_attr:"class:form-control" | attr:"rows:20"}}
+      </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <a class="btn btn-default" href="/" role="button">Cancel</a>
+    </form>
+
+{% endblock %}
+
+
+{% block cate1 %}
+{% for cate in category_list %}
+    {% if forloop.counter0|divisibleby:"2"  %}
+        <li><a href="/category/{{ cate }}">{{ cate }}</a>
+        </li>
+    {% endif %}
+{% endfor %}
+{% endblock %}
+
+{% block cate2 %}
+{% for cate in category_list %}
+    {% if not forloop.counter0|divisibleby:"2"  %}
+        <li><a href="/category/{{ cate }}">{{ cate }}</a>
+        </li>
+    {% endif %}
+{% endfor %}
+{% endblock %}

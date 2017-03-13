@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load custom_markdown %}
+{% load widget_tweaks %}
+
+{% block content %}
+{% for post in article_list %}
+
+    <h2 style="margin-bottom: 15px;">{{ post.title }} <a href="/category/{{ post.category }}" style="font-size: 20px;"><span class="label label-info">{{ post.category }}</span></a> </h2>
+
+    <p><span class="glyphicon glyphicon-user">{{ post.author }}</span> 发表于: <span class="glyphicon glyphicon-time"></span> {{ post.publish_date }} 浏览<span class="badge">{{ post.visit }}</span> </p>
+    <br>
+    <p style="font-size: 16px;color: #9b9b9b;margin-top: -10px;margin-bottom: 20px;">{{ post.content | safe | striptags | truncatewords:30 }}</p>
+
+    <p> <a href="/article/{{ post.id }}">阅读全文</a>
+        <a href="{{ object.get_absolute_url }}/article/{{post.id}}/#disqus_thread"  >View Comments</a>
+        {% if user.is_authenticated %}
+            <a href="/edit_article/{{post.id}}">编辑</a>
+        {% endif %}
+ </p>
+
+    <hr>
+
+{% endfor %}
+{% endblock %}
+
+{% block cate1 %}
+{% for cate in category_list %}
+    {% if forloop.counter0|divisibleby:"2"  %}
+        <li><a href="/category/{{ cate }}">{{ cate }}</a>
+        </li>
+    {% endif %}
+{% endfor %}
+{% endblock %}
+
+{% block cate2 %}
+{% for cate in category_list %}
+    {% if not forloop.counter0|divisibleby:"2"  %}
+        <li><a href="/category/{{ cate }}">{{ cate }}</a>
+        </li>
+    {% endif %}
+{% endfor %}
+{% endblock %}
