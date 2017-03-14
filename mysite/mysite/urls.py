@@ -17,6 +17,8 @@ from django.conf.urls import url, include
 from django.contrib import admin
 
 from django.contrib.auth import views
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -26,4 +28,4 @@ urlpatterns = [
     url(r'^accounts/logout/$', views.logout, name='logout', kwargs={'next_page': '/'}),
 
     url(r'', include('article.urls')),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -27,7 +27,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'j(0^zm-&+j&txj7#nt=9=!_8x)zn0934%6!wreb&f(a*$bnnd='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'disqus',
     'pagedown',
     'widget_tweaks',
+    'sorl.thumbnail',
     # 'tinymce',
 ]
 SITE_ID = 1
@@ -80,6 +81,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
@@ -141,4 +143,8 @@ STATICFILES_DIRS = (
 
 LOGIN_REDIRECT_URL = '/'
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+THUMBNAIL_DEBUG = True
 
