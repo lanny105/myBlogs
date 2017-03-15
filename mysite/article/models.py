@@ -15,7 +15,7 @@ class article(models.Model):
     publish_date = models.DateTimeField(blank=True, null=True)
     content = models.TextField(blank=True, null=True)
     visit = models.IntegerField(default=0)
-    image = ImageField(upload_to='temp/img/', null=True)
+    image = models.ImageField(upload_to='temp/img/', null=True)
 
     def publish(self):
         self.publish_date = timezone.now()

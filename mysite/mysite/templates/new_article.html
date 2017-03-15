@@ -1,45 +1,45 @@
-{% extends 'base.html' %}
+{% extends 'base2.html' %}
 {% load widget_tweaks %}
 
 
 {% block content %}
 
-    <h1>New article</h1>
 
-    <form method="POST" class="post-form">{% csrf_token %}
-      <div class="form-group">
-          <label>Title:</label>
-          {{ form.title | append_attr:"class:form-control"}}
-      </div>
-      <div class="form-group">
-          <label>Category:</label>
-          {{ form.category | append_attr:"class:form-control"}}
-      </div>
-      <div class="form-group">
-          <label>Content:</label>
-          {{ form.content | append_attr:"class:form-control" | attr:"rows:20"}}
-      </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-        <a class="btn btn-default" href="/" role="button">Cancel</a>
+    <h1></h1>
+
+    <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
+        <div class="col-md-4">
+            <div class="form-group">
+                  <label>Title:</label>
+                  {{ form.title | append_attr:"class:form-control"}}
+            </div>
+            <div class="form-group">
+                  <label>Category:</label>
+                  {{ form.category | append_attr:"class:form-control"}}
+            </div>
+
+            <div class="form-group">
+                  <label>Image:</label>
+                  <!--<input type="file" class="form-control">-->
+                  {{ form.image | append_attr:"class:form-control" | attr:"id:fileUpload"}}
+
+                <div id="img" name="{{ form.image.value.url }}"></div>
+
+            </div>
+            <div class="form-group">
+                <div id="image-holder"></div>
+            </div>
+
+        </div>
+        <div class="col-md-8">
+          <div class="form-group">
+              <label>Content:</label>
+              {{ form.content | append_attr:"class:form-control" | attr:"rows:28"}}
+          </div>
+            <span style="float: right"><button type="submit" class="btn btn-primary" >Submit</button>
+            <a class="btn btn-default" href="/" role="button" >Cancel</a></span>
+
+        </div>
     </form>
 
-{% endblock %}
-
-
-{% block cate1 %}
-{% for cate in category_list %}
-    {% if forloop.counter0|divisibleby:"2"  %}
-        <li><a href="/category/{{ cate }}">{{ cate }}</a>
-        </li>
-    {% endif %}
-{% endfor %}
-{% endblock %}
-
-{% block cate2 %}
-{% for cate in category_list %}
-    {% if not forloop.counter0|divisibleby:"2"  %}
-        <li><a href="/category/{{ cate }}">{{ cate }}</a>
-        </li>
-    {% endif %}
-{% endfor %}
 {% endblock %}

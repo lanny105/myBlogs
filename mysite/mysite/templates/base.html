@@ -182,13 +182,25 @@
     <script id="dsq-count-scr" src="//lanny105.disqus.com/count.js" async></script>
     <script>hljs.initHighlightingOnLoad();</script>
     <script>
+        var csrfitems = document.getElementsByName("csrfmiddlewaretoken");
+        var csrftoken = "";
+        if(csrfitems.length > 0)
+        {
+            csrftoken = csrfitems[0].value;
+        }
         var mySearch = function () {
             $(location).attr('href', '/search/' + $('#search').val())
         }
         KindEditor.ready(function(K) {
-            window.editor = K.create('#id_content');
+            window.editor = K.create('#id_content', {
+                uploadJson: '/uploadImg/',
+                extraFileUploadParams : {
+                    csrfmiddlewaretoken:csrftoken
+                },
+            });
         });
     </script>
+
 
 </body>
 

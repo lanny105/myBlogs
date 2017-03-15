@@ -2,7 +2,6 @@
 {% load custom_markdown %}
 
 {% block content %}
-<div class="row" style="background-color:white; padding: 15px;">
     <h1>{{ article.title }}</h1>
 
                 <!-- Author -->
@@ -20,11 +19,8 @@
     <hr>
     <p class="lead"> {{ article.content|custom_markdown}}</p>
     <hr>
-</div>
-<hr>
-<div class="row" style="background-color:white; padding: 15px;">
+
 {% disqus_show_comments %}
-</div>
 {% endblock %}
 {% block cate1 %}
 {% for cate in category_list %}
@@ -43,3 +39,5 @@
     {% endif %}
 {% endfor %}
 {% endblock %}
+
+

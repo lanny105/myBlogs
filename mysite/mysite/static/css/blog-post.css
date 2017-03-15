@@ -6,8 +6,29 @@
 
 body {
     padding-top: 70px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+    background-color: #f1f1f1;
 }
 
 footer {
     margin: 50px 0;
+}
+
+.row #post {
+    background-color: white;
+    border: 1px solid #e3e3e3;
+    min-height: 195px;
+}
+
+.tag {
+    margin-right: 20px;
+    float: right;
+}
+
+.tag_hr {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+pre {
+    padding: 0px;
 }

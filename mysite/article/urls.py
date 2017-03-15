@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'^search/(?P<search>\w+)/$', views.article_search),
     url(r'^new_article/$', views.post_new),
     url(r'^edit_article/(?P<id>\d+)/$', views.post_edit, name='edit_article'),
+    url(r'^uploadImg/$', views.uploadImg, name='uploadImg'),
 ]
