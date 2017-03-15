@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'pagedown',
     'widget_tweaks',
     'sorl.thumbnail',
+    'pure_pagination',
     # 'tinymce',
 ]
 SITE_ID = 1
@@ -148,3 +149,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 THUMBNAIL_DEBUG = True
 
+PAGINATION_SETTINGS = {
+    'PAGE_RANGE_DISPLAYED': 2,
+    'MARGIN_PAGES_DISPLAYED': 2,
+    'SHOW_FIRST_PAGE_WHEN_INVALID': True,
+}

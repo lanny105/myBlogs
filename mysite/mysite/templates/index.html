@@ -5,24 +5,26 @@
 
 
 {% block content %}
-{% for post in article_list %}
-
-
+{% for post in article_list.object_list %}
 
 
     <div class="row" id="post">
         <div class="row">
         <div class="col-md-4">
-            <a href="/article/{{ post.id }}" class="thumbnail" style="margin-top: 20px;">
+        <div class="parent" onclick="">
+            <div class="child">
+            <a class = "thumbnail" href="/article/{{ post.id }}" style="margin-bottom:0px;">
                 {% thumbnail post.image "250x200" crop="center" as im %}
                 <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
                 {% endthumbnail %}
             </a>
+            </div>
+        </div>
         </div>
 
         <div class="col-md-8">
 
-            <h3 style="margin-bottom: 15px;">{{ post.title }} <a href="/category/{{ post.category }}" style="font-size: 20px;"><span class="label label-info">{{ post.category }}</span></a> </h3>
+            <h3 style="margin-bottom: 15px;"><a class="header" href="/article/{{ post.id }}">{{ post.title }}</a> <a style="font-size:16px" class = "btn btn-info btn-xs" href="/category/{{ post.category }}">{{ post.category }}</a> </h3>
 
             <p style="color: #9b9b9b; margin-right: 15px;">{{ post.content | safe | striptags | truncatechars:200 }}</p>
 
@@ -41,25 +43,58 @@
         </div>
 
     </div>
-    <hr>
+    <hr style="margin-top: 10px; margin-bottom: 10px">
 
 {% endfor %}
+
+{% load i18n %}
+<div class="pagination">
+    <nav aria-label="Page navigation">
+    <ul class="pagination">
+
+    {% if article_list.has_previous %}
+        <li>
+        <a href="?{{ article_list.previous_page_number.querystring }}" class="prev">&lsaquo;&lsaquo; {% trans "previous" %}</a>
+    {% else %}
+        <li class="disabled">
+        <span class="disabled prev">&lsaquo;&lsaquo; {% trans "previous" %}</span>
+    {% endif %}
+        </li>
+    {% for page in article_list.pages %}
+
+        {% if page %}
+            {% ifequal page article_list.number %}
+            <li class="active">
+                <span class="current page">{{ page }}</span>
+            {% else %}
+            <li>
+                <a href="?{{ page.querystring }}" class="page">{{ page }}</a>
+            {% endifequal %}
+            </li>
+        {% else %}
+        <li>
+            <span>...</span>
+        </li>
+        {% endif %}
+    {% endfor %}
+
+    {% if article_list.has_next %}
+        <li>
+        <a href="?{{ article_list.next_page_number.querystring }}" class="next">{% trans "next" %} &rsaquo;&rsaquo;</a>
+    {% else %}
+        <li class="disabled">
+        <span class="disabled next">{% trans "next" %} &rsaquo;&rsaquo;</span>
+    {% endif %}
+        </li>
+    </ul>
+    </nav>
+</div>
 {% endblock %}
 
-{% block cate1 %}
-{% for cate in category_list %}
-    {% if forloop.counter0|divisibleby:"2"  %}
-        <li><a href="/category/{{ cate }}">{{ cate }}</a>
-        </li>
-    {% endif %}
-{% endfor %}
-{% endblock %}
 
-{% block cate2 %}
+{% block cate %}
 {% for cate in category_list %}
-    {% if not forloop.counter0|divisibleby:"2"  %}
-        <li><a href="/category/{{ cate }}">{{ cate }}</a>
-        </li>
-    {% endif %}
+    <li><a href="/category/{{ cate }}"><span>{{ cate }}</span></a>
+    </li>
 {% endfor %}
 {% endblock %}

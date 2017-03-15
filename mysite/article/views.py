@@ -1,6 +1,6 @@
 #!/usr/local/bin/python
 # -*- coding: utf-8 -*-
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, render_to_response
 
 from article.models import article
 from django.http import Http404
@@ -16,12 +16,26 @@ from django.views.decorators.csrf import csrf_exempt
 import os
 import json
 
+from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
+
 # Create your views here.
 
 
 def index(request):
 
-    article_list = article.objects.all()
+
+    article_l = article.objects.all()
+
+    paginator = Paginator(article_l, 6)
+
+    page = request.GET.get('page', 1)
+
+    try:
+        article_list = paginator.page(page)
+    except PageNotAnInteger:
+        article_list = paginator.page(1)
+    except EmptyPage:
+        article_list = paginator.page(paginator.num_pages)
 
     category_list = article.objects.order_by('category').values_list('category', flat=True).distinct()
 
@@ -29,6 +43,24 @@ def index(request):
 
     return render(request, 'index.html', context)
 
+
+
+    # try:
+    #     page = request.GET.get('page', 1)
+    # except PageNotAnInteger:
+    #     page = 1
+    #
+    # objects = article.objects.all()
+    #
+    # # Provide Paginator with the request object for complete querystring generation
+    #
+    # p = Paginator(objects, request=request)
+    #
+    # article_list = p.page(page)
+    # category_list = article.objects.order_by('category').values_list('category', flat=True).distinct()
+    # return render_to_response('index.html', {
+    #     'article_list': article_list, 'category_list': category_list
+    # })
 
 def article_detail(request, id):
 
@@ -52,8 +84,23 @@ def article_category(request, category):
         a = article.objects.filter(category=category)
     except article.DoesNotExist:
         raise Http404('This category does not exist')
+
+
+    paginator = Paginator(a, 3)
+
+    page = request.GET.get('page', 1)
+
+    try:
+        article_list = paginator.page(page)
+    except PageNotAnInteger:
+        article_list = paginator.page(1)
+    except EmptyPage:
+        article_list = paginator.page(paginator.num_pages)
+
+    category_list = article.objects.order_by('category').values_list('category', flat=True).distinct()
+
     return render(request, 'index.html', {
-       'article_list': a, 'category_list': category_list
+       'article_list': article_list, 'category_list': category_list
     })
 
 
@@ -63,8 +110,22 @@ def article_search(request, search):
         a = article.objects.filter(Q(title__contains=search) | Q(content__contains=search))
     except article.DoesNotExist:
         raise Http404('This category does not exist')
+
+    paginator = Paginator(a, 3)
+
+    page = request.GET.get('page', 1)
+
+    try:
+        article_list = paginator.page(page)
+    except PageNotAnInteger:
+        article_list = paginator.page(1)
+    except EmptyPage:
+        article_list = paginator.page(paginator.num_pages)
+
+    category_list = article.objects.order_by('category').values_list('category', flat=True).distinct()
+
     return render(request, 'index.html', {
-       'article_list': a, 'category_list': category_list
+       'article_list': article_list, 'category_list': category_list
     })
 
 
