@@ -21,10 +21,31 @@ from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 # Create your views here.
 
 
+@login_required
+def draft_list(request):
+    article_l = article.objects.all().filter(is_draft=True)
+
+    paginator = Paginator(article_l, 6)
+
+    page = request.GET.get('page', 1)
+
+    try:
+        article_list = paginator.page(page)
+    except PageNotAnInteger:
+        article_list = paginator.page(1)
+    except EmptyPage:
+        article_list = paginator.page(paginator.num_pages)
+
+    category_list = article.objects.order_by('category').values_list('category', flat=True).distinct()
+
+    context = {'article_list': article_list, 'category_list': category_list}
+
+    return render(request, 'index.html', context)
+
+
 def index(request):
 
-
-    article_l = article.objects.all()
+    article_l = article.objects.all().filter(is_draft=False)
 
     paginator = Paginator(article_l, 6)
 
@@ -67,7 +88,11 @@ def article_detail(request, id):
     category_list = article.objects.order_by('category').values_list('category', flat=True).distinct()
 
     try:
-        a = article.objects.get(id=id)
+        if request.user.is_authenticated:
+
+            a = article.objects.get(id=id)
+        else:
+            a = article.objects.filter(is_draft=False).get(id=id)
         a.visit += 1
         a.save()
     except article.DoesNotExist:
@@ -81,10 +106,9 @@ def article_detail(request, id):
 def article_category(request, category):
     category_list = article.objects.order_by('category').values_list('category', flat=True).distinct()
     try:
-        a = article.objects.filter(category=category)
+        a = article.objects.filter(category=category).filter(is_draft=False)
     except article.DoesNotExist:
         raise Http404('This category does not exist')
-
 
     paginator = Paginator(a, 3)
 
@@ -97,7 +121,7 @@ def article_category(request, category):
     except EmptyPage:
         article_list = paginator.page(paginator.num_pages)
 
-    category_list = article.objects.order_by('category').values_list('category', flat=True).distinct()
+    category_list = article.objects.filter(is_draft=False).order_by('category').values_list('category', flat=True).distinct()
 
     return render(request, 'index.html', {
        'article_list': article_list, 'category_list': category_list
@@ -105,9 +129,9 @@ def article_category(request, category):
 
 
 def article_search(request, search):
-    category_list = article.objects.order_by('category').values_list('category', flat=True).distinct()
+    category_list = article.objects.filter(is_draft=False).order_by('category').values_list('category', flat=True).distinct()
     try:
-        a = article.objects.filter(Q(title__contains=search) | Q(content__contains=search))
+        a = article.objects.filter(is_draft=False).filter(Q(title__contains=search) | Q(content__contains=search))
     except article.DoesNotExist:
         raise Http404('This category does not exist')
 
@@ -122,7 +146,7 @@ def article_search(request, search):
     except EmptyPage:
         article_list = paginator.page(paginator.num_pages)
 
-    category_list = article.objects.order_by('category').values_list('category', flat=True).distinct()
+    category_list = article.objects.filter(is_draft=False).order_by('category').values_list('category', flat=True).distinct()
 
     return render(request, 'index.html', {
        'article_list': article_list, 'category_list': category_list
@@ -131,13 +155,13 @@ def article_search(request, search):
 
 @login_required
 def post_new(request):
-    category_list = article.objects.order_by('category').values_list('category', flat=True).distinct()
+    category_list = article.objects.filter(is_draft=False).order_by('category').values_list('category', flat=True).distinct()
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
             a = form.save(commit=True)
             a.author = request.user
-            a.publish()
+            a.save()
             print a.image
             return redirect('article_detail', id=a.id)
         else:
@@ -150,7 +174,7 @@ def post_new(request):
 @login_required
 def post_edit(request, id):
     a = get_object_or_404(article, id=id)
-    category_list = article.objects.order_by('category').values_list('category', flat=True).distinct()
+    category_list = article.objects.filter(is_draft=False).order_by('category').values_list('category', flat=True).distinct()
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES, instance=a)
         if form.is_valid():

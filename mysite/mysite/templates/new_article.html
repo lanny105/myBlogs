@@ -19,6 +19,11 @@
             </div>
 
             <div class="form-group">
+                  <label>是否存为草稿:</label>
+                  {{ form.is_draft | append_attr:"class:form-control"}}
+            </div>
+
+            <div class="form-group">
                   <label>Image:</label>
                   <!--<input type="file" class="form-control">-->
                   {{ form.image | append_attr:"class:form-control" | attr:"id:fileUpload"}}

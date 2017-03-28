@@ -16,6 +16,8 @@ class article(models.Model):
     content = models.TextField(blank=True, null=True)
     visit = models.IntegerField(default=0)
     image = models.ImageField(upload_to='temp/img/', null=True)
+    is_draft = models.BooleanField(default=False)
+
 
     def publish(self):
         self.publish_date = timezone.now()

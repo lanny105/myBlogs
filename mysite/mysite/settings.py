@@ -154,3 +154,13 @@ PAGINATION_SETTINGS = {
     'MARGIN_PAGES_DISPLAYED': 2,
     'SHOW_FIRST_PAGE_WHEN_INVALID': True,
 }
+
+
+# pip install bootstrap-admin
+# pip install django-disqus
+# pip install markdown
+# pip install django-widget-tweaks
+# pip install sorl-thumbnail
+# pip install Pillow
+# pip install django-pure-pagination
+# pip install django-pagedown

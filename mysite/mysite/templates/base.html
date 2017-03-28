@@ -66,6 +66,9 @@
                     <li>
                         <a href="/new_article">新日志</a>
                     </li>
+                    <li>
+                        <a href="/draft_list">草稿</a>
+                    </li>
                     {% endif %}
                 </ul>
 
@@ -157,7 +160,7 @@
                     <h4>最新回复</h4>
                     {% load disqus_tags %}
                                     <!--{% disqus_recent_comments shortname num_items excerpt_length hide_avatars avatar_size %}-->
-                    {% disqus_recent_comments shortname 9 50 0 32 %}
+                    {% disqus_recent_comments shortname 5 50 0 32 %}
                 </div>
 
             </div>
